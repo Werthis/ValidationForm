@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     width: "25ch",
+    background: "#fffd",
   },
 }));
 
@@ -31,6 +32,8 @@ const App = () => {
   });
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setlastName] = useState("");
   const [type, setType] = useState("");
   const [idNumber, setIdNumber] = useState("Numer");
 
@@ -44,7 +47,9 @@ const App = () => {
 
   const handleMenuItemClick = (event, newType) => {
     setType(newType);
-    newType === "person" ? setIdNumber('Numer PESEL') : setIdNumber('Numer NIP');
+    newType === "person"
+      ? setIdNumber("Numer PESEL")
+      : setIdNumber("Numer NIP");
     setAnchorEl(null);
   };
 
@@ -52,16 +57,15 @@ const App = () => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  
-
   const classes = useStyles();
 
   console.log(type);
   console.log(idNumber);
-
+  console.log(firstName);
+  console.log(lastName);
 
   return (
-    <div className="App">
+    <div className={classes.root}>
       <Container maxWidth="sm">
         <Grid
           container
@@ -72,13 +76,19 @@ const App = () => {
         >
           <Grid container item xs={12}>
             <form noValidate autoComplete="off">
-              <TextField id="outlined-basic" label="Imię" variant="outlined" />
+              <TextField
+                className={classes.textField}
+                id="outlined-firstName"
+                label="Imię"
+                variant="outlined"
+              />
             </form>
           </Grid>
           <Grid container item xs={12}>
             <form noValidate autoComplete="off">
               <TextField
-                id="outlined-basic"
+                className={classes.textField}
+                id="outlined-lastName"
                 label="Nazwisko"
                 variant="outlined"
               />
@@ -115,7 +125,8 @@ const App = () => {
           <Grid container item xs={12}>
             <form noValidate autoComplete="off">
               <TextField
-                id="outlined-basic"
+                className={classes.textField}
+                id="outlined-idNumber"
                 label={idNumber}
                 variant="outlined"
               />
