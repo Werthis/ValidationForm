@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
+import { DropzoneArea } from "material-ui-dropzone";
 // import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -35,7 +36,8 @@ const App = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [type, setType] = useState("");
-  const [idNumber, setIdNumber] = useState("Numer");
+  const [typeName, setTypeName] = useState("TYP");
+  const [idNumberLabel, setIdNumberLabel] = useState();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,9 +49,27 @@ const App = () => {
 
   const handleMenuItemClick = (event, newType) => {
     setType(newType);
-    newType === "person"
-      ? setIdNumber("Numer PESEL")
-      : setIdNumber("Numer NIP");
+    if (newType === "person") {
+      setIdNumberLabel(
+        <TextField
+          className={classes.textField}
+          id="outlined-idNumber"
+          label="Numer PESEL"
+          variant="outlined"
+        />
+      );
+      setTypeName("Osoba Prywatna");
+    } else {
+      setIdNumberLabel(
+        <TextField
+          className={classes.textField}
+          id="outlined-idNumber"
+          label="Numer NIP"
+          variant="outlined"
+        />
+      );
+      setTypeName("Firma");
+    }
     setAnchorEl(null);
   };
 
@@ -60,7 +80,6 @@ const App = () => {
   const classes = useStyles();
 
   console.log(type);
-  console.log(idNumber);
   console.log(firstName);
   console.log(lastName);
 
@@ -100,7 +119,7 @@ const App = () => {
               aria-haspopup="true"
               onClick={handleClick}
             >
-              Typ
+              {typeName}
             </Button>
             <Menu
               id="simple-menu"
@@ -124,12 +143,7 @@ const App = () => {
           </Grid>
           <Grid container item xs={12}>
             <form noValidate autoComplete="off">
-              <TextField
-                className={classes.textField}
-                id="outlined-idNumber"
-                label={idNumber}
-                variant="outlined"
-              />
+              {idNumberLabel}
             </form>
           </Grid>
         </Grid>
