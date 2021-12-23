@@ -110,6 +110,7 @@ const App = () => {
                 id="outlined-lastName"
                 label="Nazwisko"
                 variant="outlined"
+                value={lastName}
               />
             </form>
           </Grid>
@@ -145,6 +146,26 @@ const App = () => {
             <form noValidate autoComplete="off">
               {idNumberLabel}
             </form>
+          </Grid>
+          <Grid container item xs={12}>
+            <DropzoneArea
+              style={{ width: 200, height: 30 }}
+              acceptedFiles={["image/jpeg", "image/jpg"]}
+              getPreviewIcon={(file) => {
+                if (file.file.type.split("/")[0] === "image")
+                  /// Zrobić dropzoneText jako useState i zmieniąć go na '' gdy to się wydarzy
+                  return (
+                    <img
+                      className={classes.previewImg}
+                      role="presentation"
+                      src={file.data}
+                    />
+                  );
+              }}
+              filesLimit={1}
+              dropzoneText={"Drag and drop an image here or click"}
+              onChange={(files) => console.log("Files:", files)}
+            />
           </Grid>
         </Grid>
       </Container>
