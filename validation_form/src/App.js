@@ -59,6 +59,8 @@ const App = () => {
     setFirstName(firstName);
   };
 
+  const error = nip.length === 10 ? false : true;
+
   const handleMenuItemClick = (event, newType) => {
     setType(newType);
     if (newType === "person") {
@@ -82,6 +84,8 @@ const App = () => {
           label="Numer NIP"
           variant="outlined"
           onChange={(event) => setNip(event.target.value)}
+          helperText={error ? "Niepoprawny numer NIP" : ""}
+          error={error}
         />
       );
       setTypeName("Firma");
@@ -100,11 +104,11 @@ const App = () => {
 
   const classes = useStyles();
 
-  console.log("type", type);
-  console.log("firstName", firstName);
-  console.log("lastName", lastName);
+  // console.log("type", type);
+  // console.log("firstName", firstName);
+  // console.log("lastName", lastName);
   console.log("NIP", nip);
-  console.log("PESEL", pesel);
+  // console.log("PESEL", pesel);
   console.log("values", values);
 
   return (
@@ -134,6 +138,7 @@ const App = () => {
                 className={classes.textField}
                 id="lastName"
                 label="Nazwisko"
+                placeholder="wprowadź nazwisko"
                 variant="outlined"
                 onChange={(event) => setLastName(event.target.value)}
               />
