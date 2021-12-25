@@ -32,7 +32,7 @@ const App = () => {
     lastName: "",
     type: "",
     identyNumber: "",
-    photo: "",
+    // photo: "",
   });
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -89,17 +89,23 @@ const App = () => {
     setAnchorEl(null);
   };
 
-  // const handleChange = (prop) => (event) => {
-  //   setValues({ ...values, [prop]: event.target.value });
-  // };
+  const handleSubmit = (event) => {
+    setValues({
+      firstName: firstName,
+      lastName: lastName,
+      type: type,
+      identyNumber: type === "person" ? pesel : nip,
+    });
+  };
 
   const classes = useStyles();
 
-  console.log(type);
+  console.log("type", type);
   console.log("firstName", firstName);
   console.log("lastName", lastName);
-  console.log('NIP', nip);
-  console.log('PESEL', pesel);
+  console.log("NIP", nip);
+  console.log("PESEL", pesel);
+  console.log("values", values);
 
   return (
     <div className={classes.root}>
@@ -206,7 +212,15 @@ const App = () => {
             <Button
               variant="contained"
               color="primary"
-              href="https://localhost:60001/Contractor/Save"
+              // href="https://localhost:60001/Contractor/Save"
+              onClick={(event) => {
+                setValues({
+                  firstName: firstName,
+                  lastName: lastName,
+                  type: type,
+                  identyNumber: type === "person" ? pesel : nip,
+                });
+              }}
             >
               Link
             </Button>{" "}
