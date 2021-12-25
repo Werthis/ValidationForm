@@ -1,5 +1,8 @@
 import React, { useState, Component } from "react";
+// import { Browser as Router, Switch, Route } from "react-router-dom";
 import { DropzoneArea } from "material-ui-dropzone";
+import PageNotFound from "./Components/404_page";
+import Dropzone from "dropzone";
 // import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -34,10 +37,15 @@ const App = () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [firstName, setFirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [type, setType] = useState("");
   const [typeName, setTypeName] = useState("TYP");
   const [idNumberLabel, setIdNumberLabel] = useState();
+  const [dropzoneInfo, setDropzoneInfo] = useState(
+    "Drag and drop an image here or click"
+  );
+  const [nip, setNip] = useState("");
+  const [pesel, setPesel] = useState("");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,25 +55,33 @@ const App = () => {
     setAnchorEl(null);
   };
 
+  const changeFirstName = (event) => {
+    setFirstName(firstName);
+  };
+
   const handleMenuItemClick = (event, newType) => {
     setType(newType);
     if (newType === "person") {
       setIdNumberLabel(
-        <TextField
-          className={classes.textField}
-          id="outlined-idNumber"
-          label="Numer PESEL"
-          variant="outlined"
-        />
+        <Grid container item xs={12}>
+          <TextField
+            className={classes.textField}
+            id="idNumber"
+            label="Numer PESEL"
+            variant="outlined"
+            onChange={(event) => setPesel(event.target.value)}
+          />
+        </Grid>
       );
       setTypeName("Osoba Prywatna");
     } else {
       setIdNumberLabel(
         <TextField
           className={classes.textField}
-          id="outlined-idNumber"
+          id="idNumber"
           label="Numer NIP"
           variant="outlined"
+          onChange={(event) => setNip(event.target.value)}
         />
       );
       setTypeName("Firma");
@@ -73,15 +89,17 @@ const App = () => {
     setAnchorEl(null);
   };
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  // const handleChange = (prop) => (event) => {
+  //   setValues({ ...values, [prop]: event.target.value });
+  // };
 
   const classes = useStyles();
 
   console.log(type);
-  console.log(firstName);
-  console.log(lastName);
+  console.log("firstName", firstName);
+  console.log("lastName", lastName);
+  console.log('NIP', nip);
+  console.log('PESEL', pesel);
 
   return (
     <div className={classes.root}>
@@ -90,31 +108,32 @@ const App = () => {
           container
           spacing={2}
           direction="column"
-          justifyContent="center"
-          alignItems="center"
+          // justifyContent="center"
+          // alignItems="center"
         >
-          <Grid container item xs={12}>
+          <Grid item xs={12}>
             <form noValidate autoComplete="off">
               <TextField
                 className={classes.textField}
-                id="outlined-firstName"
+                id="firstName"
                 label="Imię"
                 variant="outlined"
+                onChange={(event) => setFirstName(event.target.value)}
               />
             </form>
           </Grid>
-          <Grid container item xs={12}>
+          <Grid item xs={12}>
             <form noValidate autoComplete="off">
               <TextField
                 className={classes.textField}
-                id="outlined-lastName"
+                id="lastName"
                 label="Nazwisko"
                 variant="outlined"
-                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
               />
             </form>
           </Grid>
-          <Grid container item xs={12}>
+          <Grid item xs={12}>
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
@@ -133,42 +152,72 @@ const App = () => {
               <MenuItem
                 onClick={(event) => handleMenuItemClick(event, "person")}
               >
-                Osoba Prywatna
+                OSOBA PRYWATNA
               </MenuItem>
               <MenuItem
                 onClick={(event) => handleMenuItemClick(event, "company")}
               >
-                Firma
+                FIRMA
               </MenuItem>
             </Menu>
           </Grid>
-          <Grid container item xs={12}>
+          <Grid item xs={12}>
             <form noValidate autoComplete="off">
               {idNumberLabel}
             </form>
           </Grid>
-          <Grid container item xs={12}>
+          {/* <Grid
+            container
+            alignContent="center"
+            justifyContent="center"
+            item
+            xs={12}
+            style={{ width: 200, height: 600 }}
+          >
             <DropzoneArea
-              style={{ width: 200, height: 30 }}
               acceptedFiles={["image/jpeg", "image/jpg"]}
               getPreviewIcon={(file) => {
                 if (file.file.type.split("/")[0] === "image")
-                  /// Zrobić dropzoneText jako useState i zmieniąć go na '' gdy to się wydarzy
-                  return (
-                    <img
-                      className={classes.previewImg}
-                      role="presentation"
-                      src={file.data}
-                    />
-                  );
+                  setDropzoneInfo("");
+                return (
+                  <img
+                    className={classes.previewImg}
+                    role="presentation"
+                    src={file.data}
+                    resizeWidth="200"
+                    resizeHeight="200"
+
+                    /// Sprawdzić dokumentację <img> (zakładka mozzilla) i zobaczyć czy da się ustawić 1:1 oraz
+                    /// wysokość
+                  />
+                );
               }}
+              maxSize="300"
+              Icon="null"
               filesLimit={1}
-              dropzoneText={"Drag and drop an image here or click"}
+              dropzoneText={dropzoneInfo}
               onChange={(files) => console.log("Files:", files)}
             />
+          </Grid>{" "} */}
+          {/* <Grid container item xs={12}>
+            {/* <Dropzone></Dropzone> */}
+          {/* </Grid> */}
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              href="https://localhost:60001/Contractor/Save"
+            >
+              Link
+            </Button>{" "}
           </Grid>
         </Grid>
-      </Container>
+      </Container>{" "}
+      {/* <Router>
+        /* <Switch> */}
+      {/* <Route component={PageNotFound} /> */}
+      {/* </Switch> */}
+      {/* </Router> */}
     </div>
   );
 };
