@@ -54,9 +54,9 @@ const App = () => {
   const [idNumberLabel, setIdNumberLabel] = useState(
     <div style={{ height: 80 }} />
   );
-  const [dropzoneInfo, setDropzoneInfo] = useState(
-    "Drag and drop an image here or click"
-  );
+  // const [dropzoneInfo, setDropzoneInfo] = useState(
+  //   "Drag and drop an image here or click"
+  // );
   const [nip, setNip] = useState("");
   const [pesel, setPesel] = useState("");
   const [errorFirstNameSubmit, setErrorFirstNameSubmit] = useState(false);
