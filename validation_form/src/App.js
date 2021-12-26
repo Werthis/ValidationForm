@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, useEffect, Component } from "react";
 // import { Browser as Router, Switch, Route } from "react-router-dom";
 import { DropzoneArea } from "material-ui-dropzone";
 import PageNotFound from "./Components/404_page";
@@ -62,6 +62,26 @@ const App = () => {
   const [errorFirstNameSubmit, setErrorFirstNameSubmit] = useState(false);
   const [errorLastNameSubmit, setErrorLastNameSubmit] = useState(false);
   const [errorTypeSubmit, setErrorTypeSubmit] = useState(false);
+  const [ifDisablePeselTextField, setIfDisablePeselTextField] = useState(false);
+  const [ifDisableNipTextField, setIfDisableNipTextField] = useState(false);
+
+  useEffect(() => {
+    if (type == "company") {
+      setIfDisablePeselTextField(true);
+      setIfDisableNipTextField(false);
+    }
+    if (type == "person") {
+      setIfDisableNipTextField(true);
+      setIfDisablePeselTextField(false);
+    }
+    if (type == "") {
+      setIfDisableNipTextField(true);
+      setIfDisablePeselTextField(true);
+    }
+    // return () => {
+    //   cleanup;
+    // };
+  }, [type]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -105,62 +125,68 @@ const App = () => {
   const handleMenuItemClick = (event, newType) => {
     setType(newType);
     if (newType === "person") {
-      setIdNumberLabel(
-        <Grid
-          container
-          item
-          xs={12}
-          style={{ height: 80 }}
-          className={classes.gridContainer}
-        >
-          <TextField
-            className={classes.textField}
-            id="idNumber"
-            label="Numer PESEL"
-            variant="outlined"
-            onChange={(event) => setPesel(event.target.value)}
-            helperText={errorTypeSubmit ? "Niepoprawny numer Pesel" : ""}
-            error={errorTypeSubmit}
-          />
-        </Grid>
-      );
+      //   setIdNumberLabel(
+      //     <Grid
+      //       container
+      //       item
+      //       xs={12}
+      //       style={{ height: 80 }}
+      //       className={classes.gridContainer}
+      //     >
+      //       <TextField
+      //         className={classes.textField}
+      //         id="idNumber"
+      //         label="Numer PESEL"
+      //         variant="outlined"
+      //         onChange={(event) => setPesel(event.target.value)}
+      //         helperText={errorTypeSubmit ? "Niepoprawny numer Pesel" : ""}
+      //         error={errorTypeSubmit}
+      //       />
+      //     </Grid>
+      //   );
       setTypeName("Osoba Prywatna");
     } else {
-      setIdNumberLabel(
-        <Grid
-          container
-          item
-          xs={12}
-          style={{ height: 80 }}
-          className={classes.gridContainer}
-        >
-          <TextField
-            className={classes.textField}
-            id="idNumber"
-            label="Numer NIP"
-            variant="outlined"
-            onChange={(event) => setNip(event.target.value)}
-            helperText={errorTypeSubmit ? "Niepoprawny numer NIP" : ""}
-            error={errorTypeSubmit}
-          />{" "}
-        </Grid>
-      );
+      // setIdNumberLabel(
+      //   <Grid
+      //     container
+      //     item
+      //     xs={12}
+      //     style={{ height: 80 }}
+      //     className={classes.gridContainer}
+      //   >
+      //     <TextField
+      //       className={classes.textField}
+      //       id="idNumber"
+      //       label="Numer NIP"
+      //       variant="outlined"
+      //       onChange={(event) => setNip(event.target.value)}
+      //       helperText={errorTypeSubmit ? "Niepoprawny numer NIP" : ""}
+      //       error={errorTypeSubmit}
+      //     />{" "}
+      //   </Grid>
+      // );
       setTypeName("Firma");
     }
+
     setAnchorEl(null);
   };
 
   const classes = useStyles();
 
-  // console.log("type", type);
+  console.log("type", type);
   // console.log("firstName", firstName);
   // console.log("lastName", lastName);
-  // console.log("NIP", nip);
-  // console.log("PESEL", pesel);
+  console.log("NIP", nip);
+  console.log("PESEL", pesel);
   console.log("values", values);
-  console.log(errorFirstNameSubmit);
-  console.log(errorLastNameSubmit);
-  console.log(errorTypeSubmit);
+  console.log(
+    "ifDisableNipTextField, ifDisablePeselTextField",
+    ifDisableNipTextField,
+    ifDisablePeselTextField
+  );
+  // console.log(errorFirstNameSubmit);
+  // console.log(errorLastNameSubmit);
+  // console.log(errorTypeSubmit);
 
   // console.log(setErrorFirstNameSubmit);
 
@@ -220,10 +246,43 @@ const App = () => {
             </MenuItem>
           </Menu>
         </Grid>
-        <Grid item xs={12}>
+        <Grid
+          container
+          item
+          xs={12}
+          style={{ height: 80 }}
+          className={classes.gridContainer}
+        >
+          {" "}
           <form noValidate autoComplete="off">
-            {idNumberLabel}
+            <TextField
+              className={classes.textField}
+              id="idNumber"
+              label="Numer PESEL"
+              variant="outlined"
+              onChange={(event) => setPesel(event.target.value)}
+              helperText={errorTypeSubmit ? "Niepoprawny numer Pesel" : ""}
+              error={errorTypeSubmit}
+              disabled={ifDisablePeselTextField}
+            />
+            <TextField
+              className={classes.textField}
+              id="idNumber"
+              label="Numer NIP"
+              variant="outlined"
+              onChange={(event) => setNip(event.target.value)}
+              helperText={errorTypeSubmit ? "Niepoprawny numer NIP" : ""}
+              error={errorTypeSubmit}
+              disabled={ifDisableNipTextField}
+            />{" "}
           </form>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button variant="contained" component="label">
+            Upload File
+            <input type="file" accept={["image/jpeg", "image/jpg"]} hidden />
+          </Button>
         </Grid>
         {/* <Grid
             container
