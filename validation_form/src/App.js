@@ -61,7 +61,8 @@ const App = () => {
   const [pesel, setPesel] = useState("");
   const [errorFirstNameSubmit, setErrorFirstNameSubmit] = useState(false);
   const [errorLastNameSubmit, setErrorLastNameSubmit] = useState(false);
-  const [errorTypeSubmit, setErrorTypeSubmit] = useState(false);
+  const [errorNIPSubmit, setErrorNIPSubmit] = useState(false);
+  const [errorPESELSubmit, setErrorPESELSubmit] = useState(false);
   const [ifDisablePeselTextField, setIfDisablePeselTextField] = useState(false);
   const [ifDisableNipTextField, setIfDisableNipTextField] = useState(false);
 
@@ -98,76 +99,31 @@ const App = () => {
   // const error = nip.length === 10 ? false : true;
 
   const handleSubmit = (event) => {
-    // if (firstName === "") {
-    //   setErrorFirstNameSubmit(true);
-    // }
-    // if (lastName === "") {
-    //   setErrorLastNameSubmit(true);
-    // }
-    if (
-      (type === "person" && pesel === "") ||
-      (type === "company" && nip === "")
-    ) {
-      setErrorTypeSubmit(true);
-    } else {
-      // setErrorFirstNameSubmit(false);
-      // setErrorLastNameSubmit(false);
-      setErrorTypeSubmit(false);
-      setValues({
-        firstName: firstName,
-        lastName: lastName,
-        type: type,
-        identyNumber: type === "person" ? pesel : nip,
-      });
+    if (type === "person") {
+      if (pesel.length === 11) {
+        setErrorPESELSubmit(false);
+      } else {
+        setErrorPESELSubmit(true);
+      }
     }
+    if (type === "company") {
+      if (nip.length === 10) {
+        setErrorNIPSubmit(false);
+      } else {
+        setErrorNIPSubmit(true);
+      }
+    }
+    setValues({
+      firstName: firstName,
+      lastName: lastName,
+      type: type,
+      identyNumber: type === "person" ? pesel : nip,
+    });
   };
 
   const handleMenuItemClick = (event, newType) => {
     setType(newType);
-    if (newType === "person") {
-      //   setIdNumberLabel(
-      //     <Grid
-      //       container
-      //       item
-      //       xs={12}
-      //       style={{ height: 80 }}
-      //       className={classes.gridContainer}
-      //     >
-      //       <TextField
-      //         className={classes.textField}
-      //         id="idNumber"
-      //         label="Numer PESEL"
-      //         variant="outlined"
-      //         onChange={(event) => setPesel(event.target.value)}
-      //         helperText={errorTypeSubmit ? "Niepoprawny numer Pesel" : ""}
-      //         error={errorTypeSubmit}
-      //       />
-      //     </Grid>
-      //   );
-      setTypeName("Osoba Prywatna");
-    } else {
-      // setIdNumberLabel(
-      //   <Grid
-      //     container
-      //     item
-      //     xs={12}
-      //     style={{ height: 80 }}
-      //     className={classes.gridContainer}
-      //   >
-      //     <TextField
-      //       className={classes.textField}
-      //       id="idNumber"
-      //       label="Numer NIP"
-      //       variant="outlined"
-      //       onChange={(event) => setNip(event.target.value)}
-      //       helperText={errorTypeSubmit ? "Niepoprawny numer NIP" : ""}
-      //       error={errorTypeSubmit}
-      //     />{" "}
-      //   </Grid>
-      // );
-      setTypeName("Firma");
-    }
-
+    newType === "person" ? setTypeName("Osoba Prywatna") : setTypeName("Firma");
     setAnchorEl(null);
   };
 
@@ -259,20 +215,22 @@ const App = () => {
               className={classes.textField}
               id="idNumber"
               label="Numer PESEL"
+              placeholder="PESEL"
               variant="outlined"
               onChange={(event) => setPesel(event.target.value)}
-              helperText={errorTypeSubmit ? "Niepoprawny numer Pesel" : ""}
-              error={errorTypeSubmit}
+              helperText={errorPESELSubmit ? "Niepoprawny numer Pesel" : ""}
+              error={errorPESELSubmit}
               disabled={ifDisablePeselTextField}
             />
             <TextField
               className={classes.textField}
               id="idNumber"
               label="Numer NIP"
+              placeholder="NIP"
               variant="outlined"
               onChange={(event) => setNip(event.target.value)}
-              helperText={errorTypeSubmit ? "Niepoprawny numer NIP" : ""}
-              error={errorTypeSubmit}
+              helperText={errorNIPSubmit ? "Niepoprawny numer NIP" : ""}
+              error={errorNIPSubmit}
               disabled={ifDisableNipTextField}
             />{" "}
           </form>
@@ -284,42 +242,7 @@ const App = () => {
             <input type="file" accept={["image/jpeg", "image/jpg"]} hidden />
           </Button>
         </Grid>
-        {/* <Grid
-            container
-            alignContent="center"
-            justifyContent="center"
-            item
-            xs={12}
-            style={{ width: 200, height: 600 }}
-          >
-            <DropzoneArea
-              acceptedFiles={["image/jpeg", "image/jpg"]}
-              getPreviewIcon={(file) => {
-                if (file.file.type.split("/")[0] === "image")
-                  setDropzoneInfo("");
-                return (
-                  <img
-                    className={classes.previewImg}
-                    role="presentation"
-                    src={file.data}
-                    resizeWidth="200"
-                    resizeHeight="200"
-
-                    /// Sprawdzić dokumentację <img> (zakładka mozzilla) i zobaczyć czy da się ustawić 1:1 oraz
-                    /// wysokość
-                  />
-                );
-              }}
-              maxSize="300"
-              Icon="null"
-              filesLimit={1}
-              dropzoneText={dropzoneInfo}
-              onChange={(files) => console.log("Files:", files)}
-            />
-          </Grid>{" "} */}
-        {/* <Grid container item xs={12}>
-            {/* <Dropzone></Dropzone> */}
-        {/* </Grid> */}
+        
         <Grid item xs={12}>
           <Button
             variant="contained"
