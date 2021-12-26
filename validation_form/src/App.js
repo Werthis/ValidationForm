@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     background: "#FFFFF0",
   },
+  img: {
+    width: "150px",
+    height: "150px",
+    objectFit: "cover",
+  },
   margin: {
     margin: theme.spacing(1),
   },
@@ -65,6 +70,9 @@ const App = () => {
   const [errorPESELSubmit, setErrorPESELSubmit] = useState(false);
   const [ifDisablePeselTextField, setIfDisablePeselTextField] = useState(false);
   const [ifDisableNipTextField, setIfDisableNipTextField] = useState(false);
+  const [image, setImage] = useState(
+    "https://cenea.org.pl/wp-content/uploads/2019/05/blank-profile-picture-973460_960_720-500x500.png"
+  );
 
   useEffect(() => {
     if (type == "company") {
@@ -79,10 +87,17 @@ const App = () => {
       setIfDisableNipTextField(true);
       setIfDisablePeselTextField(true);
     }
-    // return () => {
-    //   cleanup;
-    // };
   }, [type]);
+
+  const handleImage = (event) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImage(reader.result);
+      }
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -105,20 +120,31 @@ const App = () => {
       } else {
         setErrorPESELSubmit(true);
       }
+      setValues({
+        firstName: firstName,
+        lastName: lastName,
+        type: type,
+        identyNumber: pesel.length === 11 ? pesel : "",
+      });
+    } else {
+      setErrorPESELSubmit(false);
     }
+
     if (type === "company") {
       if (nip.length === 10) {
         setErrorNIPSubmit(false);
       } else {
         setErrorNIPSubmit(true);
       }
+      setValues({
+        firstName: firstName,
+        lastName: lastName,
+        type: type,
+        identyNumber: nip.length === 10 ? nip : "",
+      });
+    } else {
+      setErrorNIPSubmit(false);
     }
-    setValues({
-      firstName: firstName,
-      lastName: lastName,
-      type: type,
-      identyNumber: type === "person" ? pesel : nip,
-    });
   };
 
   const handleMenuItemClick = (event, newType) => {
@@ -239,10 +265,20 @@ const App = () => {
         <Grid item xs={12}>
           <Button variant="contained" component="label">
             Upload File
-            <input type="file" accept={["image/jpeg", "image/jpg"]} hidden />
+            <input
+              type="file"
+              id="image_upload"
+              name="image_upload"
+              accept={["image/jpeg", "image/jpg"]}
+              onChange={handleImage}
+              hidden
+            />
           </Button>
+          <div>
+            <img src={image} alt="" id="image" />
+          </div>
         </Grid>
-        
+
         <Grid item xs={12}>
           <Button
             variant="contained"
