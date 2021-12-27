@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Route,
   Routes,
+  // useNavigate,
   Link,
   Navigate,
 } from "react-router-dom";
@@ -88,6 +89,9 @@ const App = () => {
   const [image, setImage] = useState(
     "https://cenea.org.pl/wp-content/uploads/2019/05/blank-profile-picture-973460_960_720-500x500.png"
   );
+  const [fetchError, setFetchError] = useState(null);
+
+  // let navigate = useNavigate();
 
   useEffect(() => {
     if (type === "company") {
@@ -112,6 +116,7 @@ const App = () => {
       }
     };
     reader.readAsDataURL(event.target.files[0]);
+    console.log("reader", reader);
   };
 
   const handleClick = (event) => {
@@ -158,6 +163,21 @@ const App = () => {
     } else {
       setErrorNIPSubmit(false);
     }
+
+    fetch("http://localhost:3000/Contractor/Save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw Error("Nie znaleziono metody zapisu");
+        }
+        return res.json();
+      })
+      .catch((err) => {
+        setFetchError(err.message);
+      });
   };
 
   const handleMenuItemClick = (event, newType) => {
@@ -168,7 +188,6 @@ const App = () => {
 
   const classes = useStyles();
 
-  console.log("image", image);
   // console.log("firstName", firstName);
   // console.log("lastName", lastName);
   console.log("NIP", nip);
@@ -297,25 +316,25 @@ const App = () => {
               />
             </Button>
           </Grid>
-          <Router>
-            <Grid item xs={12}>
-              <Button
-                variant="contained"
-                color="inherit"
-                border-radius="20px"
-                href="https://localhost:60001/Contractor/Save"
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>{" "}
-              <Routes>
-                <Route
-                  path="*"
-                  component={() => <Navigate to="./Components/404_page" />}
-                />{" "}
-              </Routes>
-            </Grid>
-          </Router>
+
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="inherit"
+              border-radius="20px"
+              // href="https://localhost:60001/Contractor/Save"
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>{" "}
+          </Grid>
+          {fetchError && <div>{fetchError}</div>}
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<div />} />{" "}
+              <Route path="*" element={<PageNotFound />} />{" "}
+            </Routes>
+          </BrowserRouter>
         </Grid>
       </Container>
     </div>
