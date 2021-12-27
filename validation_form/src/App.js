@@ -114,12 +114,19 @@ const App = () => {
   // const error = nip.length === 10 ? false : true;
 
   const handleSubmit = (event) => {
+    firstName.length === 0
+      ? setErrorFirstNameSubmit(true)
+      : setErrorFirstNameSubmit(false);
+
+    lastName.length === 0
+      ? setErrorLastNameSubmit(true)
+      : setErrorLastNameSubmit(false);
+
     if (type === "person") {
-      if (pesel.length === 11) {
-        setErrorPESELSubmit(false);
-      } else {
-        setErrorPESELSubmit(true);
-      }
+      pesel.length === 11
+        ? setErrorPESELSubmit(false)
+        : setErrorPESELSubmit(true);
+
       setValues({
         firstName: firstName,
         lastName: lastName,
@@ -131,11 +138,8 @@ const App = () => {
     }
 
     if (type === "company") {
-      if (nip.length === 10) {
-        setErrorNIPSubmit(false);
-      } else {
-        setErrorNIPSubmit(true);
-      }
+      nip.length === 10 ? setErrorNIPSubmit(false) : setErrorNIPSubmit(true);
+
       setValues({
         firstName: firstName,
         lastName: lastName,
@@ -261,6 +265,11 @@ const App = () => {
             />{" "}
           </form>
         </Grid>
+        <Grid item xs={12}>
+          <div>
+            <img className={classes.img} src={image} alt="" id="image" />
+          </div>
+        </Grid>
 
         <Grid item xs={12}>
           <Button variant="contained" component="label">
@@ -274,11 +283,7 @@ const App = () => {
               hidden
             />
           </Button>
-          <div>
-            <img src={image} alt="" id="image" />
-          </div>
         </Grid>
-
         <Grid item xs={12}>
           <Button
             variant="contained"
@@ -287,7 +292,7 @@ const App = () => {
             // href="https://localhost:60001/Contractor/Save"
             onClick={handleSubmit}
           >
-            Link
+            Submit
           </Button>{" "}
         </Grid>
       </Grid>
