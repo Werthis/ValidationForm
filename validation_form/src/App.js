@@ -1,55 +1,60 @@
-import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  // useNavigate,
-  Link,
-  Navigate,
-} from "react-router-dom";
-import PageNotFound from "./Components/404_page";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import React, { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
+  makeStyles,
+  TextField,
   Grid,
   Container,
-  Menu,
   Paper,
-  MenuItem,
   Button,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // flexWrap: "wrap",
-    // textAlign: "center",
-    // flexGrow: 1,
-    // justifyContent: "space-evenly",
     background: "#FFFFF0",
-    // alignItems: "center",
   },
 
   mainContainer: {
     flexWrap: "wrap",
+    marginTop: "40px",
+    width: "500px",
     textAlign: "center",
     flexGrow: 1,
     justifyContent: "space-evenly",
     background: "#3CB371",
     alignItems: "center",
+    borderRadius: "15px",
   },
 
   gridContainer: {
     justifyContent: "center",
     alignItems: "center",
-    background: "#FFFFF0",
+    background: "#3CB371",
+  },
+
+  titlePaper: {
+    padding: theme.spacing(2),
+    fontFamily: "sans-serif",
+    textAlign: "center",
+    textJustify: "center",
+    borderRadius: "25px",
+    marginTop: "10px",
+    background: "#DEB887",
+  },
+
+  button: {
+    fontFamily: "sans-serif",
+    background: "#DEB887",
+  },
+
+  insideText: {
+    fontFamily: "sans-serif",
   },
 
   idNumberTextField: {
-    marginRight: "5px",
-    marginLeft: "5px",
     width: "25ch",
-    background: "#D8BFD8",
+    background: "#FFFFF0",
     borderRadius: "5px",
   },
 
@@ -59,16 +64,20 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "cover",
     borderRadius: "10px",
   },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
+
   textField: {
+    marginTop: "10px",
     width: "25ch",
     background: "#FFFFF0",
     borderRadius: "5px",
+  },
+
+  paper: {
+    padding: theme.spacing(2),
+    fontFamily: "sans-serif",
+    textAlign: "center",
+    textJustify: "center",
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -78,43 +87,22 @@ const App = () => {
     lastName: "",
     type: "",
     identyNumber: "",
-    // photo: "",
+    photo: "",
   });
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [type, setType] = useState("person");
-  const [typeName, setTypeName] = useState("TYP");
   const [nip, setNip] = useState("");
   const [pesel, setPesel] = useState("");
   const [errorFirstNameSubmit, setErrorFirstNameSubmit] = useState(false);
   const [errorLastNameSubmit, setErrorLastNameSubmit] = useState(false);
   const [errorNIPSubmit, setErrorNIPSubmit] = useState(false);
   const [errorPESELSubmit, setErrorPESELSubmit] = useState(false);
-  const [ifDisablePeselTextField, setIfDisablePeselTextField] = useState(false);
-  const [ifDisableNipTextField, setIfDisableNipTextField] = useState(false);
   const [image, setImage] = useState(
     "https://cenea.org.pl/wp-content/uploads/2019/05/blank-profile-picture-973460_960_720-500x500.png"
   );
   const [fetchError, setFetchError] = useState(null);
-
-  // let navigate = useNavigate();
-
-  useEffect(() => {
-    if (type === "company") {
-      setIfDisablePeselTextField(true);
-      setIfDisableNipTextField(false);
-    }
-    if (type === "person") {
-      setIfDisableNipTextField(true);
-      setIfDisablePeselTextField(false);
-    }
-    if (type === "") {
-      setIfDisableNipTextField(true);
-      setIfDisablePeselTextField(true);
-    }
-  }, [type]);
 
   const handleType = (event, newType) => {
     if (newType !== null) {
@@ -131,14 +119,6 @@ const App = () => {
     };
     reader.readAsDataURL(event.target.files[0]);
     console.log("reader", reader);
-  };
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   const handleSubmit = (event) => {
@@ -160,6 +140,7 @@ const App = () => {
         lastName: lastName,
         type: type,
         identyNumber: pesel.length === 11 ? pesel : "",
+        photo: image,
       });
     } else {
       setErrorPESELSubmit(false);
@@ -173,6 +154,7 @@ const App = () => {
         lastName: lastName,
         type: type,
         identyNumber: nip.length === 10 ? nip : "",
+        photo: image,
       });
     } else {
       setErrorNIPSubmit(false);
@@ -194,28 +176,16 @@ const App = () => {
       });
   };
 
-  const handleMenuItemClick = (event, newType) => {
-    setType(newType);
-    newType === "person" ? setTypeName("Osoba Prywatna") : setTypeName("Firma");
-    setAnchorEl(null);
-  };
-
   const classes = useStyles();
 
   // console.log("firstName", firstName);
   // console.log("lastName", lastName);
-  console.log("NIP", nip);
-  console.log("PESEL", pesel);
-  console.log("values", values);
-  // console.log(
-  //   "ifDisableNipTextField, ifDisablePeselTextField",
-  //   ifDisableNipTextField,
-  //   ifDisablePeselTextField
-  // );
-  console.log("errorNIPSubmit", errorNIPSubmit);
-  console.log("errorPESELSubmit", errorPESELSubmit);
+  // console.log("NIP", nip);
+  // console.log("PESEL", pesel);
+  // console.log("values", values);
+  // console.log("errorNIPSubmit", errorNIPSubmit);
+  // console.log("errorPESELSubmit", errorPESELSubmit);
   // console.log(errorTypeSubmit);
-
   // console.log(setErrorFirstNameSubmit);
 
   return (
@@ -224,14 +194,23 @@ const App = () => {
       <Container className={classes.mainContainer}>
         <Grid container spacing={2} direction="column">
           <Grid item xs={12}>
+            <Paper className={classes.titlePaper} elevation={2}>
+              {/* formularz dodawania kontrahenta */}
+              FORMULARZ DODAWANIA KONTRAHENTA
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
             <form noValidate autoComplete="off">
               <TextField
                 className={classes.textField}
                 id="firstName"
                 label="Imię"
+                placeholder="Imię"
                 variant="outlined"
                 onChange={(event) => setFirstName(event.target.value)}
                 helperText={errorFirstNameSubmit ? "Wpisz imię" : ""}
+                FormHelperTextProps={{ classes: { root: classes.helperText } }}
+                InputLabelProps={{ classes: { root: classes.insideText } }}
                 error={errorFirstNameSubmit}
               />
             </form>
@@ -246,6 +225,8 @@ const App = () => {
                 variant="outlined"
                 onChange={(event) => setLastName(event.target.value)}
                 helperText={errorLastNameSubmit ? "Wpisz nazwisko" : ""}
+                FormHelperTextProps={{ classes: { root: classes.helperText } }}
+                InputLabelProps={{ classes: { root: classes.insideText } }}
                 error={errorLastNameSubmit}
               />
             </form>
@@ -256,52 +237,26 @@ const App = () => {
               exclusive
               onChange={handleType}
               aria-label="text variable"
+              className={classes.button}
+              elevation={3}
             >
               <ToggleButton
-                style={{ width: 200 }}
+                style={{ width: 150 }}
                 value="person"
                 aria-label="left aligned"
                 className={classes.button}
               >
-                {/* <img src={rainLogo} alt="rainLogo" width="36" height="36" /> */}
                 Osoba
               </ToggleButton>
               <ToggleButton
-                style={{ width: 200 }}
+                style={{ width: 150 }}
                 value="company"
                 aria-label="right aligned"
                 className={classes.button}
               >
-                {/* <img src={tempLogo} alt="tempLogo" width="36" height="36" />{" "} */}
                 Firma
               </ToggleButton>
             </ToggleButtonGroup>
-            {/* <Button
-              aria-controls="menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              {typeName}
-            </Button>
-            <Menu
-              id="menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              value={type}
-            >
-              <MenuItem
-                onClick={(event) => handleMenuItemClick(event, "person")}
-              >
-                OSOBA PRYWATNA
-              </MenuItem>
-              <MenuItem
-                onClick={(event) => handleMenuItemClick(event, "company")}
-              >
-                FIRMA
-              </MenuItem>
-            </Menu> */}
           </Grid>
           <Grid
             container
@@ -323,11 +278,9 @@ const App = () => {
                     ? setPesel(event.target.value)
                     : setNip(event.target.value)
                 }
-                // helperText={handleHelperText}
                 FormHelperTextProps={{ classes: { root: classes.helperText } }}
                 InputLabelProps={{ classes: { root: classes.insideText } }}
                 error={type === "company" ? errorNIPSubmit : errorPESELSubmit}
-                // disabled={ifDisablePeselTextField}
               />{" "}
             </form>
           </Grid>
@@ -337,7 +290,11 @@ const App = () => {
             </div>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" component="label">
+            <Button
+              className={classes.button}
+              variant="contained"
+              component="label"
+            >
               Upload File
               <input
                 type="file"
@@ -351,10 +308,10 @@ const App = () => {
           </Grid>
           <Grid item xs={12}>
             <Button
+              className={classes.button}
               variant="contained"
               color="inherit"
               border-radius="20px"
-              // href="https://localhost:60001/Contractor/Save"
               onClick={handleSubmit}
             >
               Submit
@@ -370,7 +327,14 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<div />} />{" "}
-              <Route path="*" element={<PageNotFound />} />{" "}
+              <Route
+                path="*"
+                element={
+                  <Paper className={classes.paper} elevation={3}>
+                    Nie znaleziono metody zapisu
+                  </Paper>
+                }
+              />{" "}
             </Routes>
           </BrowserRouter>
         </Grid>
