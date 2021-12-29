@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/ValidationForm/static/js/main.073b6ec2.js",
+    "static/js/787.8da5fb27.chunk.js": "/ValidationForm/static/js/787.8da5fb27.chunk.js",
+    "index.html": "/ValidationForm/index.html",
+    "main.073b6ec2.js.map": "/ValidationForm/static/js/main.073b6ec2.js.map",
+    "787.8da5fb27.chunk.js.map": "/ValidationForm/static/js/787.8da5fb27.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.073b6ec2.js"
+  ]
+}
