@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import {
   makeStyles,
@@ -118,7 +117,6 @@ const App = () => {
       }
     };
     reader.readAsDataURL(event.target.files[0]);
-    console.log("reader", reader);
   };
 
   const handleSubmit = (event) => {
@@ -160,7 +158,7 @@ const App = () => {
       setErrorNIPSubmit(false);
     }
 
-    fetch("http://localhost:3000/Contractor/Save", {
+    fetch("http://localhost:3000/ValidationForm/Contractor/Save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -195,7 +193,6 @@ const App = () => {
         <Grid container spacing={2} direction="column">
           <Grid item xs={12}>
             <Paper className={classes.titlePaper} elevation={2}>
-              {/* formularz dodawania kontrahenta */}
               FORMULARZ DODAWANIA KONTRAHENTA
             </Paper>
           </Grid>
@@ -324,19 +321,6 @@ const App = () => {
               </Paper>
             )}
           </Grid>{" "}
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<div />} />{" "}
-              <Route
-                path="*"
-                element={
-                  <Paper className={classes.paper} elevation={3}>
-                    Nie znaleziono metody zapisu
-                  </Paper>
-                }
-              />{" "}
-            </Routes>
-          </BrowserRouter>
         </Grid>
       </Container>
     </div>
