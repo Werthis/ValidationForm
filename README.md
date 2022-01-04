@@ -6,7 +6,7 @@ It is using the POST fetch method but is not meant to connect with the server so
 You can find it here:
 https://werthis.github.io/ValidationForm/
 
-<img src="validation_form/public/img_for_readme.png" width="750" height="650">
+<img src="validation_form/public/img_for_readme.png" width="900" height="650">
 
 
 ## `react`, `material-ui`
